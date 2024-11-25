@@ -1,0 +1,4 @@
+yarn lint
+yarn prettier
+yarn tsc
+yarn lint-staged --concurrent false
