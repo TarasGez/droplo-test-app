@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'typeface-inter';
 
 :root {
   --background: #ffffff;
@@ -17,5 +18,9 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+.btn-primary {
+  @apply mt-6 flex flex-row items-center gap-1 rounded-lg bg-button-primary-bg px-3.5 py-2.5 font-semibold text-white hover:bg-button-primary-hover;
 }
