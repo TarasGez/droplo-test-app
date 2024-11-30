@@ -12,9 +12,10 @@ interface MenuProps {
   handleAddNewItem: (newItem: MenuItemType, parentLabel: string | undefined) => void
   handleDeleteItem: (labelToDelete: string) => void
   handleEditItem: (oldItem: MenuItemType, updatedItem: MenuItemType) => void
+  handleDragItem: (items: MenuItemType[]) => void
 }
 
-const Menu: FC<MenuProps> = ({ items, handleAddNewItem, handleDeleteItem, handleEditItem }) => {
+const Menu: FC<MenuProps> = ({ items, handleAddNewItem, handleDeleteItem, handleEditItem, handleDragItem }) => {
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   const onAdd = (newMenuItem: MenuItemType) => {
@@ -31,7 +32,13 @@ const Menu: FC<MenuProps> = ({ items, handleAddNewItem, handleDeleteItem, handle
   return (
     <>
       {items.length > 0 ? (
-        <DraggableMenu itemsList={items} onAdd={handleAddNewItem} onDelete={handleDeleteItem} onEdit={handleEditItem} />
+        <DraggableMenu
+          itemsList={items}
+          onAdd={handleAddNewItem}
+          onDelete={handleDeleteItem}
+          onEdit={handleEditItem}
+          onDrag={handleDragItem}
+        />
       ) : (
         emptyView
       )}

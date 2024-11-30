@@ -70,6 +70,7 @@ const MenuContainer = () => {
       handleAddNewItem={handleAddNewItem}
       handleEditItem={handleEditItem}
       handleDeleteItem={handleDeleteItem}
+      handleDragItem={setMenu}
     />
   )
 }
