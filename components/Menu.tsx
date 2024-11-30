@@ -3,8 +3,8 @@ import { FC, useState } from 'react'
 
 import { MenuItemType } from '@/types/types'
 
-import AddMenuForm from './AddForms/AddMenuForm'
 import DraggableMenu from './DragAndDrop/DraggableMenu'
+import AddMenuForm from './AddMenuForm'
 import EmptyMenu from './EmptyMenu'
 
 interface MenuProps {
@@ -23,19 +23,19 @@ const Menu: FC<MenuProps> = ({ items, handleAddNewItem, handleDeleteItem, handle
   }
 
   const emptyView = isFormOpen ? (
-    <AddMenuForm onClose={() => setIsFormOpen(false)} onAdd={onAdd} />
+    <AddMenuForm type="add" onAdd={onAdd} onClose={() => setIsFormOpen(false)} />
   ) : (
     <EmptyMenu setIsFormOpen={setIsFormOpen} />
   )
 
   return (
-    <div>
+    <>
       {items.length > 0 ? (
         <DraggableMenu itemsList={items} onAdd={handleAddNewItem} onDelete={handleDeleteItem} onEdit={handleEditItem} />
       ) : (
         emptyView
       )}
-    </div>
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ interface IconProps {
   className?: string
 }
 
-const PlusCircleIcon: FC<IconProps> = ({ size = 20, className }) => (
+const SearchIcon: FC<IconProps> = ({ size = 18, className }) => (
   <svg
     className={className}
     width={size}
@@ -15,7 +15,7 @@ const PlusCircleIcon: FC<IconProps> = ({ size = 20, className }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M10.5 6.66667V13.3333M7.16669 10H13.8334M18.8334 10C18.8334 14.6024 15.1024 18.3333 10.5 18.3333C5.89765 18.3333 2.16669 14.6024 2.16669 10C2.16669 5.39763 5.89765 1.66667 10.5 1.66667C15.1024 1.66667 18.8334 5.39763 18.8334 10Z"
+      d="M16.5 16.5L13.5834 13.5833M15.6667 8.58333C15.6667 12.4954 12.4954 15.6667 8.58333 15.6667C4.67132 15.6667 1.5 12.4954 1.5 8.58333C1.5 4.67132 4.67132 1.5 8.58333 1.5C12.4954 1.5 15.6667 4.67132 15.6667 8.58333Z"
       stroke="currentColor"
       strokeWidth="1.66667"
       strokeLinecap="round"
@@ -24,4 +24,4 @@ const PlusCircleIcon: FC<IconProps> = ({ size = 20, className }) => (
   </svg>
 )
 
-export default PlusCircleIcon
+export default SearchIcon

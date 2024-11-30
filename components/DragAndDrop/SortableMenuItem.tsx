@@ -5,7 +5,8 @@ import { CSS } from '@dnd-kit/utilities'
 
 import { FormType, FormTypes, MenuItemType } from '@/types/types'
 
-import SubMenuForm from '../AddForms/SubMenuForm'
+import AddMenuForm from '../AddMenuForm'
+import MoveIcon from '../icons/MoveIcon'
 
 const ADD = FormTypes.ADD
 const EDIT = FormTypes.EDIT
@@ -16,9 +17,10 @@ interface SortableMenuItemProps {
   onEdit: (oldItem: MenuItemType, updatedItem: MenuItemType) => void
   onDelete: (labelToDelete: string) => void
   setActiveParent: (parentLabel: string | undefined) => void
+  className?: string
 }
 
-const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDelete, setActiveParent }) => {
+const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDelete, setActiveParent, className }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: item.label,
   })
@@ -56,31 +58,36 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDe
   }
 
   return (
-    <li ref={setNodeRef} style={style} {...attributes} {...listeners} className="flex flex-col">
-      <div className="border-primary rounded-b-lg border border-solid bg-white p-4 first:rounded-b-none first:rounded-t">
-        <div>
-          <p className="font-bold">{item.label}</p>
-          {item.link && (
-            <a href={item.link} className="text-blue-500 hover:underline">
-              {item.link}
-            </a>
-          )}
+    <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <div className={className}>
+        <div className="menu-item-data">
+          <div className="icon">
+            <MoveIcon className="text-tertiary" />
+          </div>
+          <div className="menu-item-text">
+            <h6>{item.label}</h6>
+            {item.link && (
+              <a href={item.link} className="menu-item-link">
+                {item.link}
+              </a>
+            )}
+          </div>
         </div>
-        <div className="flex space-x-2">
-          <button onClick={() => onDelete(item.label)} className="text-sm text-red-500 hover:underline">
+        <div className="btn-group">
+          <button onClick={() => onDelete(item.label)} className="btn-action">
             Usuń
           </button>
-          <button onClick={handleOpenEditForm} className="text-sm text-red-500 hover:underline">
+          <button onClick={handleOpenEditForm} className="btn-action">
             Edytuj
           </button>
-          <button onClick={handleOpenAddForm} className="text-sm text-green-500 hover:underline">
+          <button onClick={handleOpenAddForm} className="btn-action">
             Dodaj pozycję menu
           </button>
         </div>
       </div>
 
       {isFormOpen && (
-        <SubMenuForm
+        <AddMenuForm
           type={typeForm}
           item={item}
           parent={activeParent}
@@ -91,8 +98,8 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDe
       )}
 
       {item.submenu.length > 0 && (
-        <ul className="ml-16">
-          {item.submenu.map((sub) => (
+        <ul className="sub-menu">
+          {item.submenu.map((sub, index) => (
             <SortableMenuItem
               key={sub.label}
               item={sub}
@@ -100,6 +107,13 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDe
               onEdit={onEdit}
               onDelete={onDelete}
               setActiveParent={setActiveParent}
+              className={
+                index === 0 && item.submenu.length === 1
+                  ? 'sub-item-single'
+                  : index === item.submenu.length - 1
+                    ? 'sub-item-last'
+                    : 'sub-item'
+              }
             />
           ))}
         </ul>

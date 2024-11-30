@@ -41,7 +41,6 @@ const MenuContainer = () => {
       menuItemSchema(labels).parse(updatedItem)
 
       setMenu(editMenu(menu, oldItem, updatedItem))
-      alert(`Menu item "${updatedItem.label}" updated successfully!`)
     } catch (error) {
       if (error instanceof z.ZodError) {
         alert(`Validation Error: ${error.errors.map((err) => err.message).join(', ')}`)

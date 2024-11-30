@@ -5,7 +5,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 
 import { MenuItemType } from '@/types/types'
 
-import SubMenuForm from '../AddForms/SubMenuForm'
+import AddMenuForm from '../AddMenuForm'
 
 import SortableMenuItem from './SortableMenuItem'
 
@@ -56,11 +56,11 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }))
 
   return (
-    <div>
+    <div className="card">
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={itemsList.map((item) => item.label)} strategy={verticalListSortingStrategy}>
-          <ul>
-            {itemsList.map((item) => (
+          <ul className="menu">
+            {itemsList.map((item, index) => (
               <SortableMenuItem
                 key={item.label}
                 item={item}
@@ -68,17 +68,15 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
                 onEdit={handleEditItem}
                 onDelete={handleDeleteItem}
                 setActiveParent={setActiveParent}
+                className={index === 0 ? 'menu-item-first' : 'menu-item'}
               />
             ))}
           </ul>
         </SortableContext>
       </DndContext>
-      {isFormOpen && <SubMenuForm type="add" onAdd={handleAddItem} onClose={() => setIsFormOpen(false)} />}
+      {isFormOpen && <AddMenuForm type="add" onAdd={handleAddItem} onClose={() => setIsFormOpen(false)} />}
 
-      <button
-        onClick={() => setIsFormOpen(true)}
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-      >
+      <button onClick={() => setIsFormOpen(true)} className="btn-add">
         Dodaj pozycję menu
       </button>
     </div>
