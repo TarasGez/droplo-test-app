@@ -1,11 +1,11 @@
 'use client'
 import { FC, useState } from 'react'
 import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
+import AddMenuForm from '@/components/AddMenuForm'
+import { dragMenuItem, getItemClass, updateSubMenu } from '@/helpers/global'
 import { MenuItemType } from '@/types/types'
-
-import AddMenuForm from '../AddMenuForm'
 
 import SortableMenuItem from './SortableMenuItem'
 
@@ -14,9 +14,10 @@ interface DraggableMenuProps {
   onAdd: (newItem: MenuItemType, parentLabel: string | undefined) => void
   onEdit: (oldItem: MenuItemType, updatedItem: MenuItemType) => void
   onDelete: (labelToDelete: string) => void
+  onDrag: (items: MenuItemType[]) => void
 }
 
-const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDelete }) => {
+const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDelete, onDrag }) => {
   const [activeParent, setActiveParent] = useState<string | undefined>(undefined)
   const [isFormOpen, setIsFormOpen] = useState(false)
 
@@ -42,14 +43,16 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (!over || active.id === over.id) return
+    const newOrder = dragMenuItem(itemsList, active, over)
+    if (newOrder) {
+      onDrag(newOrder)
+    }
+  }
 
-    const activeIndex = itemsList.findIndex((item) => item.label === active.id)
-    const overIndex = itemsList.findIndex((item) => item.label === over.id)
-
-    if (activeIndex !== -1 && overIndex !== -1) {
-      const newOrder = arrayMove(itemsList, activeIndex, overIndex)
-      console.log('newOrder', newOrder)
+  const handleDragSubMenu = (parrent: string, newSubMenu: MenuItemType[]) => {
+    const newOrder = updateSubMenu(itemsList, parrent, newSubMenu)
+    if (newOrder) {
+      onDrag(newOrder)
     }
   }
 
@@ -67,8 +70,9 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
                 onAdd={handleAddItem}
                 onEdit={handleEditItem}
                 onDelete={handleDeleteItem}
+                onDrag={handleDragSubMenu}
                 setActiveParent={setActiveParent}
-                className={index === 0 ? 'menu-item-first' : 'menu-item'}
+                className={getItemClass(index, itemsList.length, item.submenu.length)}
               />
             ))}
           </ul>

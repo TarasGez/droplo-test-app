@@ -21,7 +21,9 @@ button {
 .main {
   @apply flex min-h-screen w-full flex-col items-center px-4 sm:px-8 lg:max-w-[1168px] lg:px-16;
 }
-
+.container {
+  @apply w-full px-6 py-4;
+}
 .empty-menu {
   @apply mt-5 flex w-full flex-col items-center rounded-lg border border-solid border-secondary-border bg-secondary-bg py-4;
 }
@@ -30,34 +32,42 @@ button {
 }
 
 .card {
-  @apply mt-8 box-border rounded-lg border border-solid border-primary-border bg-secondary-bg;
+  @apply mt-8 box-border w-full rounded-lg border border-solid border-primary-border bg-secondary-bg;
 }
 
 .menu {
   @apply border-collapse;
 }
 .sub-menu {
-  @apply menu -mb-px ml-16;
+  @apply menu -mb-px ml-16 divide-y divide-primary-border;
 }
 .item {
-  @apply flex h-19.5 flex-row items-center justify-between border-solid border-primary-border bg-primary-bg px-6 py-4;
+  @apply flex h-19.5 flex-row items-center justify-between border-primary-border bg-primary-bg px-6 py-4;
 }
 .menu-item {
-  @apply item border-b border-t;
+  @apply item border-t;
+}
+.menu-item-with-sub {
+  @apply menu-item border-b;
 }
 .menu-item-first {
   @apply item rounded-t-lg border-t-0;
 }
+.menu-item-first-with-sub {
+  @apply menu-item-first border-b;
+}
+.menu-item-last {
+  @apply menu-item border-b;
+}
 .sub-item {
-  @apply item border-b border-l;
+  @apply item border-l;
+}
+.sub-item-with-sub {
+  @apply item rounded-bl-lg border-b border-l;
 }
 .sub-item-last {
-  @apply sub-item rounded-bl-lg;
+  @apply sub-item-with-sub;
 }
-.sub-item-single {
-  @apply sub-item-last;
-}
-
 .icon {
   @apply p-2.5;
 }
@@ -93,7 +103,7 @@ button {
 }
 
 .form {
-  @apply mx-6 my-4 flex w-full gap-2 rounded-lg border border-solid border-primary-border bg-primary-bg px-6 py-5;
+  @apply flex w-full gap-2 rounded-lg border border-solid border-primary-border bg-primary-bg px-6 py-5;
 }
 .form-label {
   @apply block gap-4 text-sm font-medium text-secondary;

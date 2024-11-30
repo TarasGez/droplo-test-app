@@ -1,12 +1,13 @@
 'use client'
 import { FC, useState } from 'react'
-import { useSortable } from '@dnd-kit/sortable'
+import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
+import AddMenuForm from '@/components/AddMenuForm'
+import MoveIcon from '@/components/icons/MoveIcon'
+import { dragMenuItem, getSubClass } from '@/helpers/global'
 import { FormType, FormTypes, MenuItemType } from '@/types/types'
-
-import AddMenuForm from '../AddMenuForm'
-import MoveIcon from '../icons/MoveIcon'
 
 const ADD = FormTypes.ADD
 const EDIT = FormTypes.EDIT
@@ -16,11 +17,20 @@ interface SortableMenuItemProps {
   onAdd: (newItem: MenuItemType, parentLabel: string | undefined) => void
   onEdit: (oldItem: MenuItemType, updatedItem: MenuItemType) => void
   onDelete: (labelToDelete: string) => void
+  onDrag: (parrent: string, items: MenuItemType[]) => void
   setActiveParent: (parentLabel: string | undefined) => void
   className?: string
 }
 
-const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDelete, setActiveParent, className }) => {
+const SortableMenuItem: FC<SortableMenuItemProps> = ({
+  item,
+  onAdd,
+  onEdit,
+  onDelete,
+  onDrag,
+  setActiveParent,
+  className,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: item.label,
   })
@@ -56,6 +66,16 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDe
     transform: CSS.Transform.toString(transform),
     transition,
   }
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    const newOrder = dragMenuItem(item.submenu, active, over)
+    if (newOrder) {
+      onDrag(item.label, newOrder)
+    }
+  }
+
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }))
 
   return (
     <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
@@ -98,25 +118,24 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({ item, onAdd, onEdit, onDe
       )}
 
       {item.submenu.length > 0 && (
-        <ul className="sub-menu">
-          {item.submenu.map((sub, index) => (
-            <SortableMenuItem
-              key={sub.label}
-              item={sub}
-              onAdd={onAdd}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              setActiveParent={setActiveParent}
-              className={
-                index === 0 && item.submenu.length === 1
-                  ? 'sub-item-single'
-                  : index === item.submenu.length - 1
-                    ? 'sub-item-last'
-                    : 'sub-item'
-              }
-            />
-          ))}
-        </ul>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={item.submenu.map((item) => item.label)} strategy={verticalListSortingStrategy}>
+            <ul className="sub-menu">
+              {item.submenu.map((sub, index) => (
+                <SortableMenuItem
+                  key={sub.label}
+                  item={sub}
+                  onAdd={onAdd}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onDrag={onDrag}
+                  setActiveParent={setActiveParent}
+                  className={getSubClass(index, item.submenu.length, sub.submenu.length)}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
       )}
     </li>
   )
