@@ -1,3 +1,5 @@
+import { collectLabels } from '@/helpers/global'
+
 export const mockMenu = [
   {
     label: 'Home',
@@ -32,3 +34,5 @@ export const mockMenu = [
     submenu: [],
   },
 ]
+
+export const mockLabels = collectLabels(mockMenu)

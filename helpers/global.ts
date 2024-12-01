@@ -128,6 +128,9 @@ export const updateSubMenu = (
 
 export const getItemClass = (index: number, length: number, subLength: number): string => {
   if (index === 0) {
+    if (length === 1) {
+      return 'menu-item-single'
+    }
     if (subLength > 0) {
       return 'menu-item-first-with-sub'
     }
