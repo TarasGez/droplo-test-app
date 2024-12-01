@@ -1,7 +1,7 @@
 'use client'
 import { FC, useState } from 'react'
 
-import { MenuItemType } from '@/types/types'
+import { FormTypes, MenuItemType } from '@/types/types'
 
 import DraggableMenu from './DragAndDrop/DraggableMenu'
 import AddMenuForm from './AddMenuForm'
@@ -24,7 +24,7 @@ const Menu: FC<MenuProps> = ({ items, handleAddNewItem, handleDeleteItem, handle
   }
 
   const emptyView = isFormOpen ? (
-    <AddMenuForm type="add" onAdd={onAdd} onClose={() => setIsFormOpen(false)} />
+    <AddMenuForm type={FormTypes.ADD} onAdd={onAdd} onClose={() => setIsFormOpen(false)} />
   ) : (
     <EmptyMenu setIsFormOpen={setIsFormOpen} />
   )

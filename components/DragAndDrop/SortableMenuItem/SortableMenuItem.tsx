@@ -1,13 +1,15 @@
 'use client'
 import { FC, useState } from 'react'
-import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { DragEndEvent } from '@dnd-kit/core'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import AddMenuForm from '@/components/AddMenuForm'
 import MoveIcon from '@/components/icons/MoveIcon'
-import { dragMenuItem, getSubClass } from '@/helpers/global'
-import { FormType, FormTypes, MenuItemType } from '@/types/types'
+import { dragMenuItem } from '@/helpers/global'
+import { FormType, FormTypes, MenuItemType, MenuTypes } from '@/types/types'
+
+import SortablContainer from './SortablContainer'
 
 const ADD = FormTypes.ADD
 const EDIT = FormTypes.EDIT
@@ -19,7 +21,7 @@ interface SortableMenuItemProps {
   onDelete: (labelToDelete: string) => void
   onDrag: (parrent: string, items: MenuItemType[]) => void
   setActiveParent: (parentLabel: string | undefined) => void
-  className?: string
+  className: string
 }
 
 const SortableMenuItem: FC<SortableMenuItemProps> = ({
@@ -75,11 +77,11 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({
     }
   }
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }))
+  const _className = isFormOpen && className.includes('menu-item') ? `${className} border-b` : className
 
   return (
     <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <div className={className}>
+      <div className={_className} data-testid="sortable-item">
         <div className="menu-item-data">
           <div className="icon">
             <MoveIcon className="text-tertiary" />
@@ -107,35 +109,29 @@ const SortableMenuItem: FC<SortableMenuItemProps> = ({
       </div>
 
       {isFormOpen && (
-        <AddMenuForm
-          type={typeForm}
-          item={item}
-          parent={activeParent}
-          onAdd={handleAddItem}
-          onEdit={handleEditItem}
-          onClose={() => setIsFormOpen(false)}
-        />
+        <div className="form-container">
+          <AddMenuForm
+            type={typeForm}
+            item={item}
+            parent={activeParent}
+            onAdd={handleAddItem}
+            onEdit={handleEditItem}
+            onClose={() => setIsFormOpen(false)}
+          />
+        </div>
       )}
 
       {item.submenu.length > 0 && (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={item.submenu.map((item) => item.label)} strategy={verticalListSortingStrategy}>
-            <ul className="sub-menu">
-              {item.submenu.map((sub, index) => (
-                <SortableMenuItem
-                  key={sub.label}
-                  item={sub}
-                  onAdd={onAdd}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onDrag={onDrag}
-                  setActiveParent={setActiveParent}
-                  className={getSubClass(index, item.submenu.length, sub.submenu.length)}
-                />
-              ))}
-            </ul>
-          </SortableContext>
-        </DndContext>
+        <SortablContainer
+          items={item.submenu}
+          type={MenuTypes.SUBMENU}
+          handleDragEnd={handleDragEnd}
+          handleAddItem={handleAddItem}
+          handleEditItem={handleEditItem}
+          handleDeleteItem={onDelete}
+          handleDragSubMenu={onDrag}
+          setActiveParent={setActiveParent}
+        />
       )}
     </li>
   )

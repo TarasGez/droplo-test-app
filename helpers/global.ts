@@ -1,7 +1,7 @@
 import { Active, Over } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 
-import { MenuItemType } from '@/types/types'
+import { MenuItemType, MenuType, MenuTypes } from '@/types/types'
 
 export const collectLabels = (menuItems: MenuItemType[]): string[] => {
   return menuItems.reduce<string[]>((labels, item) => {
@@ -154,4 +154,11 @@ export const getSubClass = (index: number, length: number, subLength: number): s
   }
 
   return 'sub-item'
+}
+
+export const getClass = (type: MenuType, index: number, length: number, subLength: number): string => {
+  if (type === MenuTypes.MENU) {
+    return getItemClass(index, length, subLength)
+  }
+  return getSubClass(index, length, subLength)
 }
