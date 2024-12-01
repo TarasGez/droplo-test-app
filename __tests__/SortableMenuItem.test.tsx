@@ -2,7 +2,7 @@ import { DndContext } from '@dnd-kit/core'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import SortableMenuItem from '@/components/DragAndDrop/SortableMenuItem'
+import SortableMenuItem from '@/components/DragAndDrop/SortableMenuItem/SortableMenuItem'
 import { MenuItemType } from '@/types/types'
 
 const mockOnAdd = jest.fn()
@@ -39,22 +39,13 @@ const renderSortable = () =>
       onDelete={mockOnDelete}
       onDrag={mockOnDrag}
       setActiveParent={mockSetActiveParent}
+      className="menu-item"
     />
   )
 
 describe('SortableMenuItem', () => {
   it('renders menu item with label and link', () => {
-    render(
-      <SortableMenuItem
-        item={mockItem}
-        onAdd={mockOnAdd}
-        onEdit={mockOnEdit}
-        onDelete={mockOnDelete}
-        onDrag={mockOnDrag}
-        setActiveParent={mockSetActiveParent}
-        className="test-class"
-      />
-    )
+    renderSortable()
 
     expect(screen.getByText('Home')).toBeInTheDocument()
     expect(screen.getByText('https://example.com')).toBeInTheDocument()
@@ -115,6 +106,7 @@ describe('SortableMenuItem', () => {
           onDelete={mockOnDelete}
           onDrag={mockOnDrag}
           setActiveParent={mockSetActiveParent}
+          className="menu-item"
         />
       </DndContext>
     )

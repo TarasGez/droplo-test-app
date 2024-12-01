@@ -12,8 +12,7 @@ jest.mock('../helpers/global', () => ({
   updateMenu: jest.fn(),
   editMenu: jest.fn(),
   deleteMenuItem: jest.fn(),
-  getItemClass: jest.fn(),
-  getSubClass: jest.fn(),
+  getClass: jest.fn(),
 }))
 
 describe('MenuContainer', () => {
@@ -22,8 +21,7 @@ describe('MenuContainer', () => {
   const mockUpdateMenu = helpers.updateMenu as jest.Mock
   const mockEditMenu = helpers.editMenu as jest.Mock
   const mockDeleteMenuItem = helpers.deleteMenuItem as jest.Mock
-  const mockGetItemClass = helpers.getItemClass as jest.Mock
-  const mockGetSubClass = helpers.getSubClass as jest.Mock
+  const mockGetClass = helpers.getClass as jest.Mock
   const useStateMock = React.useState as jest.Mock
 
   const mockMenuItem = initialState[0]
@@ -40,8 +38,7 @@ describe('MenuContainer', () => {
     mockUpdateMenu.mockReturnValue([mockMenuItem])
     mockEditMenu.mockReturnValue([mockMenuItemUpdated])
     mockDeleteMenuItem.mockReturnValue([])
-    mockGetItemClass.mockReturnValue('menu-item')
-    mockGetSubClass.mockReturnValue('sub-item')
+    mockGetClass.mockReturnValue('menu-item')
   })
 
   it('renders Menu component', () => {

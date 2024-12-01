@@ -1,13 +1,12 @@
 'use client'
 import { FC, useState } from 'react'
-import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { DragEndEvent } from '@dnd-kit/core'
 
 import AddMenuForm from '@/components/AddMenuForm'
-import { dragMenuItem, getItemClass, updateSubMenu } from '@/helpers/global'
-import { MenuItemType } from '@/types/types'
+import { dragMenuItem, updateSubMenu } from '@/helpers/global'
+import { FormTypes, MenuItemType, MenuTypes } from '@/types/types'
 
-import SortableMenuItem from './SortableMenuItem'
+import SortablContainer from './SortableMenuItem'
 
 interface DraggableMenuProps {
   itemsList: MenuItemType[]
@@ -56,33 +55,26 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
     }
   }
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }))
-
   return (
     <div className="card">
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={itemsList.map((item) => item.label)} strategy={verticalListSortingStrategy}>
-          <ul className="menu">
-            {itemsList.map((item, index) => (
-              <SortableMenuItem
-                key={item.label}
-                item={item}
-                onAdd={handleAddItem}
-                onEdit={handleEditItem}
-                onDelete={handleDeleteItem}
-                onDrag={handleDragSubMenu}
-                setActiveParent={setActiveParent}
-                className={getItemClass(index, itemsList.length, item.submenu.length)}
-              />
-            ))}
-          </ul>
-        </SortableContext>
-      </DndContext>
-      {isFormOpen && <AddMenuForm type="add" onAdd={handleAddItem} onClose={() => setIsFormOpen(false)} />}
+      <SortablContainer
+        items={itemsList}
+        type={MenuTypes.MENU}
+        handleDragEnd={handleDragEnd}
+        handleAddItem={handleAddItem}
+        handleEditItem={handleEditItem}
+        handleDeleteItem={handleDeleteItem}
+        handleDragSubMenu={handleDragSubMenu}
+        setActiveParent={setActiveParent}
+      />
 
-      <button onClick={() => setIsFormOpen(true)} className="btn-add">
-        Dodaj pozycję menu
-      </button>
+      <div className="form-add-container">
+        {isFormOpen && <AddMenuForm type={FormTypes.ADD} onAdd={handleAddItem} onClose={() => setIsFormOpen(false)} />}
+
+        <button onClick={() => setIsFormOpen(true)} className="btn-add">
+          Dodaj pozycję menu
+        </button>
+      </div>
     </div>
   )
 }
