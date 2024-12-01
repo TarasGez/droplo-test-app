@@ -1,8 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { z } from 'zod'
 
-import { mockMenu } from '@/constants/mocks'
 import { collectLabels, deleteMenuItem, doesMenuItemExist, editMenu, updateMenu } from '@/helpers/global'
 import { menuItemSchema } from '@/types/schemas'
 import { MenuItemType } from '@/types/types'
@@ -10,12 +9,8 @@ import { MenuItemType } from '@/types/types'
 import Menu from './Menu'
 
 const MenuContainer = () => {
-  const [menu, setMenu] = useState<MenuItemType[]>(mockMenu)
-  const [labels, setfirst] = useState<string[]>([])
-
-  useEffect(() => {
-    setfirst(collectLabels(menu))
-  }, [menu])
+  const [menu, setMenu] = useState<MenuItemType[]>([])
+  const [labels, setLabels] = useState<string[]>([])
 
   const addMenuItem = (newItem: MenuItemType, parentLabel?: string) => {
     try {
@@ -27,6 +22,7 @@ const MenuContainer = () => {
       }
       const updatedMenu = updateMenu(menu, newItem, parentLabel)
       setMenu(updatedMenu)
+      setLabels(collectLabels(updatedMenu))
     } catch (error) {
       if (error instanceof z.ZodError) {
         alert(`Validation Error: ${error.errors.map((err) => err.message).join(', ')}`)

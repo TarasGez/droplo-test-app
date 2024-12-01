@@ -53,6 +53,9 @@ button {
 .menu-item-first {
   @apply item rounded-t-lg border-t-0;
 }
+.menu-item-single {
+  @apply menu-item-first border-b;
+}
 .menu-item-first-with-sub {
   @apply menu-item-first border-b;
 }
