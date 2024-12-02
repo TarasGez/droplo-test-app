@@ -382,6 +382,11 @@ describe('getItemClass', () => {
     expect(result).toBe('menu-item-single')
   })
 
+  it('should return "menu-item-first-with-sub" if index is 0, length is 1, and subLength is greater than 0', () => {
+    const result = getItemClass(0, 1, 2)
+    expect(result).toBe('menu-item-first-with-sub')
+  })
+
   it('should return "menu-item-first-with-sub" if index is 0, length is greater than 1, and subLength is greater than 0', () => {
     const result = getItemClass(0, 3, 2)
     expect(result).toBe('menu-item-first-with-sub')
