@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
-import { getClass } from '@/helpers/global'
+import { getClass } from '@/helpers/styleHelpers'
 import { MenuItemType, MenuType } from '@/types/types'
 
 import SortableMenuItem from './SortableMenuItem'

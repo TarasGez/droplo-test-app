@@ -1,7 +1,4 @@
-import { Active, Over } from '@dnd-kit/core'
-import { arrayMove } from '@dnd-kit/sortable'
-
-import { MenuItemType, MenuType, MenuTypes } from '@/types/types'
+import { MenuItemType } from '@/types/types'
 
 export const collectLabels = (menuItems: MenuItemType[]): string[] => {
   return menuItems.reduce<string[]>((labels, item) => {
@@ -90,75 +87,3 @@ export const deleteMenuItem = (menuItems: MenuItemType[], targetLabel: string): 
       return item
     })
     .filter((item): item is MenuItemType => item !== null)
-
-export const dragMenuItem = (menu: MenuItemType[], active: Active, over: Over | null): MenuItemType[] | undefined => {
-  if (!over || active.id === over.id) return
-
-  const activeIndex = menu.findIndex((item) => item.label === active.id)
-  const overIndex = menu.findIndex((item) => item.label === over.id)
-
-  if (activeIndex !== -1 && overIndex !== -1) {
-    const newOrder = arrayMove(menu, activeIndex, overIndex)
-    return newOrder
-  }
-}
-
-export const updateSubMenu = (
-  itemsList: MenuItemType[],
-  parent: string,
-  newSubMenu: MenuItemType[]
-): MenuItemType[] => {
-  return itemsList.map((item) => {
-    if (item.label === parent) {
-      return {
-        ...item,
-        submenu: newSubMenu,
-      }
-    }
-
-    if (item.submenu?.length) {
-      return {
-        ...item,
-        submenu: updateSubMenu(item.submenu, parent, newSubMenu),
-      }
-    }
-    return item
-  })
-}
-
-export const getItemClass = (index: number, length: number, subLength: number): string => {
-  if (index === 0) {
-    if (subLength > 0) {
-      return 'menu-item-first-with-sub'
-    }
-    if (length === 1) {
-      return 'menu-item-single'
-    }
-    return 'menu-item-first'
-  }
-  if (subLength > 0) {
-    return 'menu-item-with-sub'
-  }
-  if (index === length - 1) {
-    return 'menu-item-last'
-  }
-  return 'menu-item'
-}
-
-export const getSubClass = (index: number, length: number, subLength: number): string => {
-  if (subLength > 0) {
-    return 'sub-item-with-sub'
-  }
-  if (index === length - 1) {
-    return 'sub-item-last'
-  }
-
-  return 'sub-item'
-}
-
-export const getClass = (type: MenuType, index: number, length: number, subLength: number): string => {
-  if (type === MenuTypes.MENU) {
-    return getItemClass(index, length, subLength)
-  }
-  return getSubClass(index, length, subLength)
-}

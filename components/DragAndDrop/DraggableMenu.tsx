@@ -3,7 +3,7 @@ import { FC, useState } from 'react'
 import { DragEndEvent } from '@dnd-kit/core'
 
 import AddMenuForm from '@/components/AddMenuForm'
-import { dragMenuItem, updateSubMenu } from '@/helpers/global'
+import { dragMenuItem, dragSubMenuItem } from '@/helpers/dndHelpers'
 import { FormTypes, MenuItemType, MenuTypes } from '@/types/types'
 
 import SortablContainer from './SortableMenuItem'
@@ -49,7 +49,7 @@ const DraggableMenu: FC<DraggableMenuProps> = ({ itemsList, onAdd, onEdit, onDel
   }
 
   const handleDragSubMenu = (parrent: string, newSubMenu: MenuItemType[]) => {
-    const newOrder = updateSubMenu(itemsList, parrent, newSubMenu)
+    const newOrder = dragSubMenuItem(itemsList, parrent, newSubMenu)
     if (newOrder) {
       onDrag(newOrder)
     }

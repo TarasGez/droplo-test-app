@@ -6,7 +6,7 @@ import { CSS } from '@dnd-kit/utilities'
 
 import AddMenuForm from '@/components/AddMenuForm'
 import MoveIcon from '@/components/icons/MoveIcon'
-import { dragMenuItem } from '@/helpers/global'
+import { dragMenuItem } from '@/helpers/dndHelpers'
 import { FormType, FormTypes, MenuItemType, MenuTypes } from '@/types/types'
 
 import SortablContainer from './SortablContainer'
