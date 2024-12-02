@@ -19,18 +19,18 @@ button {
 }
 
 .main {
-  @apply flex min-h-screen w-full flex-col items-center px-4 sm:px-8 lg:max-w-[1168px] lg:px-16;
+  @apply my-7 flex min-h-screen w-full flex-col items-center px-4 sm:px-8 lg:max-w-[1168px] lg:px-16;
 }
 
 .empty-menu {
-  @apply mt-5 flex w-full flex-col items-center rounded-lg border border-solid border-secondary-border bg-secondary-bg py-4;
+  @apply flex w-full flex-col items-center rounded-lg border border-solid border-secondary-border bg-secondary-bg py-4;
 }
 .empty-menu-text {
   @apply mb-6 text-sm text-tertiary;
 }
 
 .card {
-  @apply my-8 box-border w-full rounded-lg border border-solid border-primary-border bg-secondary-bg;
+  @apply box-border w-full rounded-lg border border-solid border-primary-border bg-secondary-bg;
 }
 
 .menu {
@@ -43,19 +43,19 @@ button {
   @apply flex h-19.5 flex-row items-center justify-between border-primary-border bg-primary-bg px-6 py-4;
 }
 .menu-item {
-  @apply item border-y;
+  @apply item relative z-0 border-t;
 }
 .menu-item-with-sub {
   @apply menu-item border-b;
 }
 .menu-item-first {
-  @apply item rounded-t-lg border-t-0;
+  @apply item relative z-10 rounded-t-lg border-t-0;
 }
 .menu-item-single {
-  @apply menu-item-first border-b;
+  @apply menu-item-first relative z-10;
 }
 .menu-item-first-with-sub {
-  @apply menu-item-first border-b;
+  @apply menu-item-first relative z-10 border-b;
 }
 .menu-item-last {
   @apply item border-t;
@@ -64,7 +64,7 @@ button {
   @apply item -mt-px border-b border-l border-t;
 }
 .sub-item-with-sub {
-  @apply sub-item rounded-bl-lg border-b;
+  @apply sub-item relative z-0 rounded-bl-lg border-b;
 }
 .sub-item-last {
   @apply sub-item-with-sub;
@@ -123,5 +123,5 @@ button {
   @apply mb-2 mt-1 h-10 w-full rounded-md border border-solid border-primary-border bg-primary-bg px-3 py-2 shadow-sm outline-none hover:border-quaternary-border;
 }
 .form-input-with-icon {
-  @apply form-input flex items-center;
+  @apply form-input flex items-center gap-2;
 }

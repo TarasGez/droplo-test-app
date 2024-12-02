@@ -57,7 +57,9 @@ const MenuContainer = () => {
   }
 
   const handleDeleteItem = (labelToDelete: string) => {
-    setMenu(deleteMenuItem(menu, labelToDelete))
+    const updatedMenu = deleteMenuItem(menu, labelToDelete)
+    setMenu(updatedMenu)
+    setLabels(collectLabels(updatedMenu))
   }
 
   return (
