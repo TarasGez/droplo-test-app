@@ -34,9 +34,11 @@ const MenuContainer = () => {
 
   const handleEditItem = (oldItem: MenuItemType, updatedItem: MenuItemType) => {
     try {
-      menuItemSchema(labels).parse(updatedItem)
+      menuItemSchema(labels.filter((l) => l !== oldItem.label)).parse(updatedItem)
 
-      setMenu(editMenu(menu, oldItem, updatedItem))
+      const updatedMenu = editMenu(menu, oldItem, updatedItem)
+      setMenu(updatedMenu)
+      setLabels(collectLabels(updatedMenu))
     } catch (error) {
       if (error instanceof z.ZodError) {
         alert(`Validation Error: ${error.errors.map((err) => err.message).join(', ')}`)
